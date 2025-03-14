@@ -24,7 +24,17 @@ export const signup = async (req, res) => {
     const token = generateToken(user._id);
 
     res.status(201).json({
-      user: { id: user._id, username: user.username, email: user.email },
+      user: {
+        id: user._id,
+        username: user.username,
+        fullName: user.fullName,
+        email: user.email,
+        profileImg: user.profileImg,
+        bio: user.bio,
+        followers: user.followers,
+        following: user.following,
+        savedPosts: user.savedPosts,
+      },
       token,
     });
   } catch (error) {
@@ -53,7 +63,17 @@ export const login = async (req, res) => {
     const token = generateToken(user._id);
 
     res.status(200).json({
-      user: { id: user._id, username: user.username, email: user.email },
+      user: {
+        id: user._id,
+        username: user.username,
+        fullName: user.fullName,
+        email: user.email,
+        profileImg: user.profileImg,
+        bio: user.bio,
+        followers: user.followers,
+        following: user.following,
+        savedPosts: user.savedPosts,
+      },
       token,
     });
   } catch (error) {
