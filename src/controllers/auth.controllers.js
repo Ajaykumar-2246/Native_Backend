@@ -2,7 +2,7 @@ import { User } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 
 const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
+  return jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: "15d" });
 };
 
 // Signup
