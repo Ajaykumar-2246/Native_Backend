@@ -5,15 +5,6 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 dotenv.config();
 
-// Validate Cloudinary environment variables
-if (
-  !process.env.CLOUDINARY_CLOUD_NAME ||
-  !process.env.CLOUDINARY_API_KEY ||
-  !process.env.CLOUDINARY_API_SECRET
-) {
-  throw new Error("Missing Cloudinary environment variables. Check .env file.");
-}
-
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
