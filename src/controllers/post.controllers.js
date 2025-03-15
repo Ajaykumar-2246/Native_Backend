@@ -36,10 +36,14 @@ export const getAllPosts = async (req, res) => {
 
 export const likeUnlikePost = async (req, res) => {
   try {
-    const { postId } = req.params.id;
-    const userId = req.userId;
+    const { postId } = req.params; // Extract postId from req.params
+    const userId = req.userId; // Extract userId from the request (set by middleware)
+
+    // Find the user and post
     const user = await User.findById(userId);
     const post = await Post.findById(postId);
+
+    // Check if user and post exist
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -47,14 +51,18 @@ export const likeUnlikePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    // Check if the user has already liked the post
     if (post.likes.includes(userId)) {
+      // Unlike the post
       await post.updateOne({ $pull: { likes: userId } });
-      return res.status(200).json({ message: "Post unliked" });
+      return res.status(200).json({ message: "Post unliked", post });
     } else {
+      // Like the post
       await post.updateOne({ $push: { likes: userId } });
-      return res.status(200).json({ message: "Post liked" });
+      return res.status(200).json({ message: "Post liked", post });
     }
   } catch (error) {
     console.error("Error liking/unliking post:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
