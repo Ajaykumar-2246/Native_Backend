@@ -36,12 +36,12 @@ export const getAllPosts = async (req, res) => {
 
 export const likeUnlikePost = async (req, res) => {
   try {
-    const { postId } = req.params; // Extract postId from req.params
+    const { id: postId } = req.params; // Extract postId from req.params
     const userId = req.userId; // Extract userId from the request (set by middleware)
 
     // Find the user and post
     const user = await User.findById(userId);
-    const post = await Post.findById(postId);
+    const post = await Post.findById(postId); // Corrected: Pass postId directly
 
     // Check if user and post exist
     if (!user) {

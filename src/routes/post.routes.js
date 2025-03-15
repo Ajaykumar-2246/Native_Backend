@@ -13,5 +13,4 @@ router.post("/createPost", protectRoutes, upload.single("image"), createPost);
 router.get("/getAllPosts", protectRoutes, getAllPosts);
 
 router.post("/likeUnlikePost/:id", protectRoutes, likeUnlikePost);
-
 export default router;
