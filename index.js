@@ -5,6 +5,7 @@ import cors from "cors";
 import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/auth.routes.js";
 import userRoutes from "./src/routes/user.routes.js";
+import postRoutes from "./src/routes/post.routes.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
 
 connectDB()
   .then(() => {

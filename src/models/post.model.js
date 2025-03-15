@@ -13,6 +13,7 @@ const postSchema = new mongoose.Schema(
     image: {
       type: String,
       default: "",
+      required: true,
     },
     likes: [
       {
@@ -44,6 +45,6 @@ const postSchema = new mongoose.Schema(
 );
 
 // Indexing for better query performance
-postSchema.index({ userId: 1 });
+postSchema.index({ userId: 1, createdAt: -1 });
 
 export const Post = mongoose.model("Post", postSchema);
