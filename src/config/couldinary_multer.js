@@ -1,10 +1,18 @@
 import dotenv from "dotenv";
-import multer from "multer"; // Import multer
+import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 
-// Load environment variables
 dotenv.config();
+
+// Validate Cloudinary environment variables
+if (
+  !process.env.CLOUDINARY_CLOUD_NAME ||
+  !process.env.CLOUDINARY_API_KEY ||
+  !process.env.CLOUDINARY_API_SECRET
+) {
+  throw new Error("Missing Cloudinary environment variables. Check .env file.");
+}
 
 // Configure Cloudinary
 cloudinary.config({
@@ -13,15 +21,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Set up Multer storage using Cloudinary
+// Set up Cloudinary storage
 export const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "posts",
-    format: "png",
+    format: async (req, file) => "png",
     public_id: (req, file) => `post-${Date.now()}`,
   },
 });
 
-// Initialize Multer with the Cloudinary storage
+// Initialize Multer with Cloudinary storage
 export const upload = multer({ storage });
