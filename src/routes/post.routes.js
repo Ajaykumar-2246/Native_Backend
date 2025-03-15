@@ -1,7 +1,7 @@
 import express from "express";
 import { createPost, getAllPosts } from "../controllers/post.controllers.js";
 import { protectRoutes } from "../middleware/protectRoutes.middleware.js";
-import { upload } from "../config/cloudinary_multer.js";
+import { upload } from "../config/couldinary_multer.js";
 
 const router = express.Router();
 
