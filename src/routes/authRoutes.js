@@ -15,13 +15,9 @@ const generateToken = (userId) => {
 router.post("/signup", async (req, res) => {
   try {
     const { username, email, password } = req.body;
-
-    // Validate required fields
     if (!username || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
-
-    // Check if username or email already exists
     const existingUsername = await User.findOne({ username });
     const existingEmail = await User.findOne({ email });
 
@@ -33,14 +29,13 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    // Create a new user
-    const newUser = new User({ username, email, password });
+    const profilePic = `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
+
+    const newUser = new User({ username, email, password, profilePic });
     await newUser.save();
 
-    // Generate JWT token
     const token = generateToken(newUser._id);
 
-    // Send response with token and user details
     res.status(201).json({
       token,
       user: {
@@ -62,30 +57,20 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Validate required fields
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
-
-    // Find the user by email
     const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Check if the password matches
     const isPasswordMatch = await user.matchPassword(password);
 
     if (!isPasswordMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-
-    // Generate JWT token
     const token = generateToken(user._id);
-
-    // Send response with token and user details
     res.status(200).json({
       token,
       user: {
