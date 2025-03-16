@@ -1,0 +1,85 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+.env
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# Ignore environment variables
+.env
+
+# Ignore Node.js modules
+node_modules/
+
+# Ignore build/output directories
+dist/
+build/
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore IDE/editor specific files
+.vscode/
+.idea/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore npm/yarn cache
+.npm
+.yarn
+.yarnrc
+
+# Ignore dependency directories
+jspm_packages/
+
+# Ignore debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore local development files
+.local
+
+# Ignore coverage reports
+coverage/
+.nyc_output/
+
+# Ignore package-lock files (if using Yarn)
+package-lock.json
+
+# Ignore TypeScript build files
+*.tsbuildinfo
