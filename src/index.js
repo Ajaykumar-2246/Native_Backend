@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import job from "./config/cron.js";
+import job from "../src/config/cron.js";
 
 import connectDB from "../src/config/db.js";
 import authRoutes from "../src/routes/authRoutes.js";
