@@ -19,7 +19,6 @@ const bookSchema = new mongoose.Schema(
     caption: {
       type: String,
       default: "",
-      required: true,
     },
     coverImg: {
       type: String,
@@ -30,25 +29,10 @@ const bookSchema = new mongoose.Schema(
       required: [true, "Rating is required"],
       min: [0, "Rating cannot be negative"],
       max: [5, "Rating cannot be more than 5"],
-      set: (val) => Math.round(val * 10) / 10, // Round to 1 decimal place
-    },
-    category: {
-      type: String,
-      enum: [
-        "Fiction",
-        "Non-Fiction",
-        "Science",
-        "History",
-        "Fantasy",
-        "Biography",
-        "Other",
-      ],
-      default: "Other",
+      set: (val) => Math.round(val * 10) / 10,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 export const Book = mongoose.model("Book", bookSchema);
