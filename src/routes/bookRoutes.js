@@ -7,7 +7,6 @@ import cloudinary from "../config/cloudinary.js";
 const router = express.Router();
 
 // Create a new book
-
 router.post("/create", protectRoutes, async (req, res) => {
   try {
     const { title, author, caption, category, coverImg, rating } = req.body;
@@ -15,23 +14,40 @@ router.post("/create", protectRoutes, async (req, res) => {
     if (!title || !author || !caption || !category || !coverImg || !rating) {
       return res.status(400).json({ message: "All fields are required" });
     }
+    if (rating < 0 || rating > 5) {
+      return res
+        .status(400)
+        .json({ message: "Rating must be between 0 and 5" });
+    }
+    const allowedCategories = [
+      "Fiction",
+      "Non-Fiction",
+      "Science",
+      "History",
+      "Fantasy",
+      "Biography",
+      "Other",
+    ];
+    if (!allowedCategories.includes(category)) {
+      return res.status(400).json({ message: "Invalid category" });
+    }
 
-    // Upload the book cover image to Cloudinary
     const result = await cloudinary.uploader.upload(coverImg, {
       resource_type: "image",
       folder: "books",
     });
 
     const newBook = new Book({
+      userId: req.user._id,
       title,
       author,
       caption,
       category,
-      coverImg: result.secure_url, // Use the secure URL from Cloudinary
+      coverImg: result.secure_url,
       rating,
     });
 
-    await newBook.save(); // Save the book to the database
+    await newBook.save();
     res
       .status(201)
       .json({ message: "Book created successfully", book: newBook });
@@ -42,10 +58,9 @@ router.post("/create", protectRoutes, async (req, res) => {
 });
 
 // Get all books
-
 router.get("/books", protectRoutes, async (req, res) => {
   try {
-    const books = await Book.find(); // Use `Book` instead of `Books`
+    const books = await Book.find();
     res.status(200).json(books);
   } catch (error) {
     console.error(error);
@@ -54,13 +69,21 @@ router.get("/books", protectRoutes, async (req, res) => {
 });
 
 // Delete a book
-
 router.delete("/delete/:id", protectRoutes, async (req, res) => {
   try {
     const { id } = req.params;
     const book = await Book.findById(id);
+
+    // Check if the book exists
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
+    }
+
+    // Ensure only the owner can delete the book
+    if (book.userId.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this book" });
     }
 
     // Delete the book cover image from Cloudinary
@@ -78,13 +101,13 @@ router.delete("/delete/:id", protectRoutes, async (req, res) => {
 });
 
 // Save/Unsave a book
-
 router.put("/saveBook/:id", protectRoutes, async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(req.user._id);
     const book = await Book.findById(id);
 
+    // Check if the book exists
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
@@ -108,6 +131,5 @@ router.put("/saveBook/:id", protectRoutes, async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 export default router;

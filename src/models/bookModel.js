@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const bookSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     title: {
       type: String,
       required: [true, "Book title is required"],
@@ -22,7 +27,6 @@ const bookSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
-      default: 0,
       required: [true, "Rating is required"],
       min: [0, "Rating cannot be negative"],
       max: [5, "Rating cannot be more than 5"],
